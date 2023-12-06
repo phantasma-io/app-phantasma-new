@@ -53,9 +53,5 @@ int helper_send_response_sig() {
     offset += G_context.tx_info.signature_len;
     resp[offset++] = (uint8_t) G_context.tx_info.v;*/
 
-    uint8_t resp = G_context.tx_info.signature;
-    size_t offset = G_context.tx_info.signature_len;
-
-
-    return io_send_response_pointer(resp, offset, SW_OK);
+    return io_send_response_pointer(G_context.tx_info.signature,  G_context.tx_info.signature_len, SW_OK);
 }
