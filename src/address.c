@@ -1,6 +1,6 @@
 /*****************************************************************************
- *   Ledger App Boilerplate.
- *   (c) 2020 Ledger SAS.
+ *   Ledger App Phantasma.
+ *   (c) 2023 Phantasma Team.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,9 +25,12 @@
 
 #include "address.h"
 
+#include "common/base58.h"
+#include "common/format.h"
+
 #include "transaction/types.h"
 
-bool address_from_pubkey(const uint8_t public_key[static 65], uint8_t *out, size_t out_len) {
+bool address_from_pubkey(const uint8_t public_key[static 64], uint8_t *out, size_t out_len) {
     /*uint8_t address[32] = {0};
     cx_sha3_t keccak256;
 

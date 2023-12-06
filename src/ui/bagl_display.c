@@ -1,5 +1,5 @@
 /*****************************************************************************
- *   Ledger App Boilerplate.
+ *   Ledger App Phantasma.
  *   (c) 2020 Ledger SAS.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -169,5 +169,62 @@ int ui_display_transaction() {
 
     return 0;
 }
+/*
+// FLOW to display transaction information:
+// #1 screen : eye icon + "Review Transaction"
+// #2 screen : display contract name
+// #3 screen : display method name
+// #4 screen : display arguments
+// #4 screen : approve button
+// #5 screen : reject button
+UX_FLOW(ux_display_custom_transaction_flow,
+        &ux_display_review_step,
+        &ux_display_nexus_step,
+        &ux_display_chain_step,
+        &ux_display_contract_step,
+        &ux_display_method_step,
+        &ux_display_method_args_step,
+        &ux_display_approve_step,
+        &ux_display_reject_step);
+
+int ui_display_custom_transaction() {
+    if (G_context.req_type != CONFIRM_TRANSACTION || G_context.state != STATE_PARSED) {
+        G_context.state = STATE_NONE;
+        return io_send_sw(SW_BAD_STATE);
+    }
+
+    //memset(g_txlength, 0, sizeof(g_txlength));
+    //format_u64(g_txlength, sizeof(g_txlength), G_context.tx_info.transaction.allow_gas.args_len);
+
+    memset(g_nexus, 0, sizeof(g_nexus));
+    memmove(g_nexus, G_context.tx_info.transaction.nexus, G_context.tx_info.transaction.nexus_len);
+
+    memset(g_chain, 0, sizeof(g_chain));
+    memmove(g_chain, G_context.tx_info.transaction.chain, G_context.tx_info.transaction.chain_len);
+
+    memset(g_contract, 0, sizeof(g_contract));
+    memmove(g_contract, (uint8_t *)  G_context.tx_info.transaction.name, G_context.tx_info.transaction.name_len);
+
+    memset(g_contract_method, 0, sizeof(g_contract_method));
+    memmove(g_contract_method, (uint8_t *)  G_context.tx_info.transaction.method, G_context.tx_info.transaction.method_len);
+
+    memset(g_address, 0, sizeof(g_address));
+    memmove(g_address, (uint8_t *)  G_context.tx_info.transaction.output_args, G_context.tx_info.transaction.output_args_len);
+
+    //memset(g_scriptlength, 0, sizeof(g_scriptlength));
+    //format_u64(g_scriptlength, sizeof(g_scriptlength), G_context.tx_info.transaction.script_len);
+
+    //memset(g_address, 0, sizeof(g_address));
+    //memmove(g_address, G_context.tx_info.transaction.to, G_context.tx_info.transaction.to_len);
+
+    // TODO: Needs to show args from the contract call.
+
+    g_validate_callback = &ui_action_validate_transaction;
+
+    ux_flow_init(0, ux_display_custom_transaction_flow, NULL);
+
+    return 0;
+}
+*/
 
 #endif

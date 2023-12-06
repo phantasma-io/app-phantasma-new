@@ -14,3 +14,8 @@ void ui_menu_settings(void);
  * Show about submenu (copyright, date).
  */
 void ui_menu_about(void);
+
+/**
+ * Show user Public key.
+*/
+void ui_menu_pubkey(void);
