@@ -1,0 +1,2 @@
+#Allow speculos access via 127.0.0.1:5000
+docker container stop  app-phantasma-container; docker container rm  app-phantasma-container; docker pull ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest; docker run --privileged -e DISPLAY='host.docker.internal:0' -p 5000:5000 -v 'd:/1phantasma/app-phantasma:/app' -t -d --name  app-phantasma-container ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest
