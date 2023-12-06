@@ -45,12 +45,11 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
         }
 
         return io_send_sw(SW_OK);
-
     } else {  // parse transaction
-
         if (G_context.req_type != CONFIRM_TRANSACTION) {
             return io_send_sw(SW_BAD_STATE);
         }
+
         if (G_context.tx_info.raw_tx_len + cdata->size > sizeof(G_context.tx_info.raw_tx)) {
             return io_send_sw(SW_WRONG_TX_LENGTH);
         }
@@ -61,10 +60,16 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
         }
         G_context.tx_info.raw_tx_len += cdata->size;
 
+        size_t resp_size = G_context.tx_info.raw_tx_len;
+        size_t offset = 0;
+        if (G_context.tx_info.raw_tx_len > IO_APDU_BUFFER_SIZE - 2) {
+            offset = G_context.tx_info.raw_tx_len - (IO_APDU_BUFFER_SIZE - 2);
+        }
         if (more) {
             // more APDUs with transaction part are expected.
             // Send a SW_OK to signal that we have received the chunk
-            return io_send_sw(SW_OK);
+            //return io_send_sw(SW_OK);
+            return io_send_response_pointer(G_context.tx_info.raw_tx,resp_size,SW_OK);
 
         } else {
             // last APDU for this transaction, let's parse, display and request a sign confirmation
@@ -76,12 +81,25 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
             parser_status_e status = transaction_deserialize(&buf, &G_context.tx_info.transaction);
             PRINTF("Parsing status: %d.\n", status);
             if (status != PARSING_OK) {
-                return io_send_sw(SW_TX_PARSING_FAIL);
+                //return io_send_sw(SW_TX_PARSING_FAIL);
+                uint8_t resp[1] = {0};
+                resp[0] = status;
+                return io_send_response(
+                    &(const buffer_t){.ptr = resp, .size = sizeof(resp), .offset = 0},
+                    SW_TX_PARSING_FAIL);
+                    
             }
 
             G_context.state = STATE_PARSED;
 
-            cx_sha3_t keccak256;
+            if ( G_context.tx_info.transaction.type == TRANSACTION_TYPE_CUSTOM)
+            {
+                return ui_display_custom_transaction();
+            }else {
+                return ui_display_transaction();
+            }
+
+            /*cx_sha3_t keccak256;
 
             if (cx_keccak_init_no_throw(&keccak256, 256) != CX_OK) {
                 return io_send_sw(SW_TX_HASH_FAIL);
@@ -98,7 +116,7 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
 
             PRINTF("Hash: %.*H\n", sizeof(G_context.tx_info.m_hash), G_context.tx_info.m_hash);
 
-            return ui_display_transaction();
+            return ui_display_transaction();*/
         }
     }
 
