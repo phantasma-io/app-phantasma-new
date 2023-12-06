@@ -4,6 +4,8 @@
 
 #include "types.h"
 
+#include "../constants.h"
+
 /**
  * Deserialize raw transaction in structure.
  *

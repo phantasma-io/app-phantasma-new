@@ -6,7 +6,6 @@
 #include "bip32.h"
 
 #include "constants.h"
-#include "common/bip32.h"
 #include "transaction/types.h"
 
 /**
@@ -39,7 +38,7 @@ typedef enum {
  * Structure for public key context information.
  */
 typedef struct {
-    uint8_t raw_public_key[64];  /// format (1), x-coordinate (32), y-coodinate (32)
+    uint8_t raw_public_key[65];  /// format (1), x-coordinate (32), y-coodinate (32)
     uint8_t chain_code[32];      /// for public key derivation
 } pubkey_ctx_t;
 

@@ -27,13 +27,37 @@
 
 int transaction_serialize(const transaction_t *tx, uint8_t *out, size_t out_len) {
     size_t offset = 0;
+    size_t max_len = tx->nexus_len + tx->chain_len + tx->script_len + 3;
 
-    if (8 + ADDRESS_LEN + 8 + varint_size(tx->memo_len) + tx->memo_len > out_len) {
+    if (max_len > out_len) {
         return -1;
     }
 
+    offset += varint_write(out, offset, tx->nexus_len);
+    memmove(out + offset, tx->nexus, tx->nexus_len);
+    offset += tx->nexus_len;
+
+    offset += varint_write(out, offset, tx->chain_len);
+    memmove(out + offset, tx->chain, tx->chain_len);
+    offset += tx->chain_len;
+
+    offset += varint_write(out, offset, tx->script_len);
+    memmove(out + offset, tx->script, tx->script_len);
+    offset += tx->script_len;
+
+    write_u32_be(out, offset, tx->expiration);
+    offset += 4;
+
+    offset += varint_write(out, offset, tx->payload_len);
+    memmove(out + offset, tx->payload, tx->payload_len);
+    offset += tx->payload_len;
+
+    /*if (8 + ADDRESS_LEN + 8 + varint_size(tx->memo_len) + tx->memo_len > out_len) {
+        return -1;
+    }*/
+
     // nonce
-    write_u64_be(out, offset, tx->nonce);
+    /*write_u64_be(out, offset, tx->nonce);
     offset += 8;
 
     // to
@@ -53,7 +77,7 @@ int transaction_serialize(const transaction_t *tx, uint8_t *out, size_t out_len)
 
     // memo
     memmove(out + offset, tx->memo, tx->memo_len);
-    offset += tx->memo_len;
+    offset += tx->memo_len;*/
 
     return (int) offset;
 }

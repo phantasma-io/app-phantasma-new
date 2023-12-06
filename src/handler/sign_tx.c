@@ -84,9 +84,7 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
                 //return io_send_sw(SW_TX_PARSING_FAIL);
                 uint8_t resp[1] = {0};
                 resp[0] = status;
-                return io_send_response(
-                    &(const buffer_t){.ptr = resp, .size = sizeof(resp), .offset = 0},
-                    SW_TX_PARSING_FAIL);
+                return io_send_response_pointer(resp, sizeof(resp), SW_TX_PARSING_FAIL);
                     
             }
 

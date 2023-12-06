@@ -38,7 +38,16 @@
 
 static action_validate_cb g_validate_callback;
 static char g_amount[30];
-static char g_address[43];
+static char g_bip32_path[60];
+static char g_address[240];
+static char g_token[TOKEN_LEN];
+static char g_contract[TOKEN_LEN];
+static char g_contract_method[CONTRACT_METHOD_LEN];
+//static char g_contract_method_args[64];
+static char g_nexus[NEXUS_LEN];
+static char g_chain[CHAIN_LEN];
+static char g_txlength[TXLENGTH_LEN];
+static char g_scriptlength[SCRIPTLENGTH_LEN];
 
 // Validate/Invalidate public key and go back to home
 static void ui_action_validate_pubkey(bool choice) {
@@ -54,6 +63,48 @@ static void ui_action_validate_transaction(bool choice) {
 
 // Step with icon and text
 UX_STEP_NOCB(ux_display_confirm_addr_step, pn, {&C_icon_eye, "Confirm Address"});
+// Step with title/text for BIP32 path
+UX_STEP_NOCB(ux_display_path_step,
+             bnnn_paging,
+             {
+                 .title = "Path",
+                 .text = g_bip32_path,
+             });
+// Step with title/text for address
+UX_STEP_NOCB(ux_display_token_step,
+             bnnn_paging,
+             {
+                 .title = "Token",
+                 .text = g_token,
+             });
+// Step with title/text for address
+UX_STEP_NOCB(ux_display_txlength_step,
+             bnnn_paging,
+             {
+                 .title = "Tx Length",
+                 .text = g_txlength,
+             });
+// Step with title/text for address
+UX_STEP_NOCB(ux_display_nexus_step,
+             bnnn_paging,
+             {
+                 .title = "Nexus",
+                 .text = g_nexus,
+             });
+// Step with title/text for address
+UX_STEP_NOCB(ux_display_chain_step,
+             bnnn_paging,
+             {
+                 .title = "Chain",
+                 .text = g_chain,
+             });
+// Step with title/text for address
+UX_STEP_NOCB(ux_display_scriptlength_step,
+             bnnn_paging,
+             {
+                 .title = "Script Length",
+                 .text = g_scriptlength,
+             });
 // Step with title/text for address
 UX_STEP_NOCB(ux_display_address_step,
              bnnn_paging,
@@ -134,7 +185,12 @@ UX_STEP_NOCB(ux_display_amount_step,
 // #5 screen : reject button
 UX_FLOW(ux_display_transaction_flow,
         &ux_display_review_step,
+        &ux_display_txlength_step,
+        &ux_display_nexus_step,
+        &ux_display_chain_step,
+        &ux_display_scriptlength_step,
         &ux_display_address_step,
+        &ux_display_token_step,
         &ux_display_amount_step,
         &ux_display_approve_step,
         &ux_display_reject_step);
@@ -169,7 +225,31 @@ int ui_display_transaction() {
 
     return 0;
 }
-/*
+
+// Step with title/text for Contract name
+UX_STEP_NOCB(ux_display_contract_step,
+             bnnn_paging,
+             {
+                 .title = "Contract",
+                 .text = g_contract,
+             });
+
+// Step with title/text for Method name
+UX_STEP_NOCB(ux_display_method_step,
+             bnnn_paging,
+             {
+                 .title = "Method",
+                 .text = g_contract_method,
+             });
+
+// Step with title/text for Method name
+UX_STEP_NOCB(ux_display_method_args_step,
+             bnnn_paging,
+             {
+                 .title = "Method Args",
+                 .text = g_address,
+             });
+
 // FLOW to display transaction information:
 // #1 screen : eye icon + "Review Transaction"
 // #2 screen : display contract name
@@ -225,6 +305,5 @@ int ui_display_custom_transaction() {
 
     return 0;
 }
-*/
 
 #endif

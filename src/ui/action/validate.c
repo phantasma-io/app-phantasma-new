@@ -25,28 +25,33 @@
 #include "../../globals.h"
 #include "../../helper/send_response.h"
 
+#define SIG_SIZE 64
+
 void validate_pubkey(bool choice) {
     if (choice) {
         helper_send_response_pubkey();
     } else {
         io_send_sw(SW_DENY);
     }
+
+    //ui_menu_main();
 }
 
 static int crypto_sign_message(void) {
     uint32_t info = 0;
-    size_t sig_len = sizeof(G_context.tx_info.signature);
+    size_t sig_len = SIG_SIZE; //sizeof(G_context.tx_info.signature);
 
     cx_err_t error = bip32_derive_ecdsa_sign_hash_256(CX_CURVE_256K1,
                                                       G_context.bip32_path,
                                                       G_context.bip32_path_len,
                                                       CX_RND_RFC6979 | CX_LAST,
-                                                      CX_SHA256,
+                                                      CX_SHA512,
                                                       G_context.tx_info.m_hash,
                                                       sizeof(G_context.tx_info.m_hash),
                                                       G_context.tx_info.signature,
                                                       &sig_len,
                                                       &info);
+    
     if (error != CX_OK) {
         return -1;
     }
