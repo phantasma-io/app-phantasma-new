@@ -136,8 +136,49 @@ typedef struct {
 
 typedef struct {
     uint64_t nonce;     /// nonce (8 bytes)
-    uint64_t value;     /// amount value (8 bytes)
-    uint8_t *to;        /// pointer to address (20 bytes)
+    //uint64_t value;     /// amount value (8 bytes)
+    //uint8_t *to;        /// pointer to address (20 bytes)
     uint8_t *memo;      /// memo (variable length)
     uint64_t memo_len;  /// length of memo (8 bytes)
+
+    uint8_t *nexus;        /// nexus (variable length)
+    uint64_t nexus_len;    /// length of nexus (8 bytes)
+    uint8_t *chain;        /// chain (variable length)
+    uint64_t chain_len;    /// length of chain (8 bytes)
+    uint8_t *script;       /// script (variable length)
+    uint64_t script_len;   /// length of script (8 bytes)
+    uint32_t expiration;   /// expiration
+    uint8_t *payload;      /// payload (variable length)
+    uint64_t payload_len;  /// length of payload (8 bytes)
+
+    // parsed from script
+    uint8_t *from;       /// address (variable length)
+    uint64_t from_len;   /// length of address (8 bytes)
+    uint8_t *to;         /// address (variable length)
+    uint64_t to_len;     /// length of address (8 bytes)
+    uint8_t *token;      /// token (variable length)
+    uint64_t token_len;  /// length of token (8 bytes)
+    uint8_t *value;      /// amount value (8 bytes)
+    uint64_t value_len;
+    uint8_t *gas_limit;  /// gas_limit value (8 bytes)
+    uint64_t gas_limit_len;
+    uint8_t *gas_price;  /// gas_price value (8 bytes)
+    uint64_t gas_price_len;
+
+    uint8_t *method;      /// method (variable length)
+    uint64_t method_len;  /// length of method (8 bytes)
+
+    uint8_t *name;      /// name (variable length)
+    uint64_t name_len;  /// length of name (8 bytes)
+
+    buffer_t script_buf;  /// buffer for parsing script.
+    contract_t allow_gas;
+    contract_t contract_call;
+    interop_t transfer_tokens;
+    contract_t spend_gas;
+    end_t end;
+
+    transaction_type_e type;
+    uint8_t* output_args;
+    uint8_t output_args_len;
 } transaction_t;
