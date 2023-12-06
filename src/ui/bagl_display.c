@@ -136,6 +136,7 @@ UX_STEP_CB(ux_display_reject_step,
 // #4 screen: reject button
 UX_FLOW(ux_display_pubkey_flow,
         &ux_display_confirm_addr_step,
+        &ux_display_path_step,
         &ux_display_address_step,
         &ux_display_approve_step,
         &ux_display_reject_step);
@@ -145,15 +146,22 @@ int ui_display_address() {
         G_context.state = STATE_NONE;
         return io_send_sw(SW_BAD_STATE);
     }
+
+     memset(g_bip32_path, 0, sizeof(g_bip32_path));
+    if (!bip32_path_format(G_context.bip32_path,
+                           G_context.bip32_path_len,
+                           g_bip32_path,
+                           sizeof(g_bip32_path))) {
+        return io_send_sw(SW_DISPLAY_BIP32_PATH_FAIL);
+    }
+
     memset(g_address, 0, sizeof(g_address));
     uint8_t address[ADDRESS_LEN] = {0};
     if (!address_from_pubkey(G_context.pk_info.raw_public_key, address, sizeof(address))) {
         return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
     }
 
-    if (format_hex(address, sizeof(address), g_address, sizeof(g_address)) == -1) {
-        return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
-    }
+    memmove(g_address, address, ADDRESS_LEN);
 
     g_validate_callback = &ui_action_validate_pubkey;
 
@@ -201,20 +209,34 @@ int ui_display_transaction() {
         return io_send_sw(SW_BAD_STATE);
     }
 
+     memset(g_txlength, 0, sizeof(g_txlength));
+    format_u64(g_txlength, sizeof(g_txlength), G_context.tx_info.raw_tx_len);
+
+    memset(g_nexus, 0, sizeof(g_nexus));
+    memmove(g_nexus, G_context.tx_info.transaction.nexus, G_context.tx_info.transaction.nexus_len);
+
+    memset(g_chain, 0, sizeof(g_chain));
+    memmove(g_chain, G_context.tx_info.transaction.chain, G_context.tx_info.transaction.chain_len);
+
+    memset(g_scriptlength, 0, sizeof(g_scriptlength));
+    format_u64(g_scriptlength, sizeof(g_scriptlength), G_context.tx_info.transaction.script_len);
+
     memset(g_amount, 0, sizeof(g_amount));
-    char amount[30] = {0};
-    if (!format_fpu64(amount, sizeof(amount), *G_context.tx_info.transaction.value, EXPONENT_SMALLEST_UNIT)) {
-        return io_send_sw(SW_DISPLAY_AMOUNT_FAIL);
-    }
-    snprintf(g_amount, sizeof(g_amount), "BOL %.*s", sizeof(amount), amount);
-    PRINTF("Amount: %s\n", g_amount);
+    //char amount[255] = {0};
+    memmove(g_amount, G_context.tx_info.transaction.value, G_context.tx_info.transaction.value_len);
+    //snprintf(g_amount, sizeof(g_amount), "%.*s", sizeof(amount), amount);
+    //PRINTF("Amount: %s\n", g_amount);
 
     memset(g_address, 0, sizeof(g_address));
+    memmove(g_address, G_context.tx_info.transaction.to, G_context.tx_info.transaction.to_len);
+    // g_address[0] = 'A';
+    // format_u64(g_address + 1, sizeof(g_address) - 1, G_context.tx_info.transaction.to_len);
 
-    if (format_hex(G_context.tx_info.transaction.to, ADDRESS_LEN, g_address, sizeof(g_address)) ==
-        -1) {
-        return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
-    }
+    memset(g_token, 0, sizeof(g_token));
+    memmove(g_token, G_context.tx_info.transaction.token, G_context.tx_info.transaction.token_len);
+    // g_token[0] = 'T';
+    // format_u64(g_token + 1, sizeof(g_token) - 1, G_context.tx_info.transaction.token_len);
+
 
     g_validate_callback = &ui_action_validate_transaction;
 
