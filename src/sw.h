@@ -11,11 +11,16 @@
 /**
  * Status word for incorrect P1 or P2.
  */
+#define SW_WRONG_P1P1 0x6A90
 #define SW_WRONG_P1P2 0x6A86
 /**
  * Status word for either wrong Lc or length of APDU command less than 5.
  */
 #define SW_WRONG_DATA_LENGTH 0x6A87
+
+#define SW_NO_DATA_LENGTH 0x6A88
+
+#define SW_WRONG_MAIN_DATA_LENGTH 0x6A89
 /**
  * Status word for unknown command with this INS.
  */
@@ -60,3 +65,6 @@
  * Status word for signature fail.
  */
 #define SW_SIGNATURE_FAIL 0xB008
+
+#define SW_SIGNATURE_PARAMETER_FAIL 0xB009
+

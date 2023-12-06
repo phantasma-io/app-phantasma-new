@@ -60,3 +60,45 @@ int handler_get_public_key(buffer_t *cdata, bool display) {
 
     return helper_send_response_pubkey();
 }
+
+
+int handler_get_public_key_menu() {
+    // PATH = "44'/60'/0'/0/0"
+    // Size = 21 // 0x15 
+    // first byte is the length of the path (0x05)
+    const uint8_t myCMD[] = {
+        0x05, 0x80, 0x00, 0x00, 0x2C, 0x80, 0x00, 0x00, 0x3C,
+        0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00
+    };
+
+    // Initialize the buffer
+    buffer_t cdata = {0};
+    cdata.ptr = (const uint8_t*) myCMD; 
+    cdata.size = 0x15;
+    cdata.offset = 0;
+
+    cx_ecfp_private_key_t private_key = {0};
+    cx_ecfp_public_key_t public_key = {0};
+
+    // Read BIP32 path from incoming data and handle errors
+    if (!buffer_read_u8(&cdata, &G_context.bip32_path_len) || !buffer_read_bip32_path(&cdata, G_context.bip32_path, (size_t) G_context.bip32_path_len)) {
+        return -3;
+    }
+
+    // Derive private key according to BIP32 path
+    if (crypto_derive_private_key(&private_key, G_context.bip32_path, G_context.bip32_path_len) != 0) {
+        explicit_bzero(&private_key, sizeof(private_key));
+        return -2; // or appropriate error code
+    }
+
+    // Generate corresponding public key
+    if (crypto_init_public_key(&private_key, &public_key, G_context.pk_info.raw_public_key) != 0) {
+        explicit_bzero(&private_key, sizeof(private_key));
+        return -1; // or appropriate error code
+    }
+
+    // Reset private key after use for security
+    explicit_bzero(&private_key, sizeof(private_key));
+    return 0;
+}

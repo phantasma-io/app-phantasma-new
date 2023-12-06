@@ -28,7 +28,7 @@
 #include "transaction/types.h"
 
 bool address_from_pubkey(const uint8_t public_key[static 65], uint8_t *out, size_t out_len) {
-    uint8_t address[32] = {0};
+    /*uint8_t address[32] = {0};
     cx_sha3_t keccak256;
 
     if (out_len < ADDRESS_LEN) {
@@ -48,7 +48,22 @@ bool address_from_pubkey(const uint8_t public_key[static 65], uint8_t *out, size
         return false;
     }
 
-    memmove(out, address + sizeof(address) - ADDRESS_LEN, ADDRESS_LEN);
+    memmove(out, address + sizeof(address) - ADDRESS_LEN, ADDRESS_LEN);*/
+    
+    uint8_t address_hex[34] = {0};
+    address_hex[0] = 0x01;
+    address_hex[1] = 0x00;
+    memmove(address_hex + 2, public_key, 32);
 
+    char address[128] = {0};
+    memset(address, 0, sizeof(address));
+    address[0] = 'P';
+    size_t encodedLength = base58_encode(address_hex, sizeof(address_hex), address + 1, sizeof(address) - 1);
+    
+    if (out_len < encodedLength) {
+        return false;
+    }
+
+    memmove(out, address, encodedLength + 1);
     return true;
 }
