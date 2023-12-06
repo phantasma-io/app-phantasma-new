@@ -58,6 +58,9 @@ void app_main() {
     }
 
     for (;;) {
+        // Reset structured APDU command
+        memset(&cmd, 0, sizeof(cmd));
+        
         // Receive command bytes in G_io_apdu_buffer
         if ((input_len = io_recv_command()) < 0) {
             PRINTF("=> io_recv_command failure\n");
