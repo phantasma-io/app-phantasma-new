@@ -9,16 +9,16 @@ This documentation describes the APDU messages interface to communicate with the
 
 The application covers the following functionalities :
 
-  - Get a public Boilerplate address given a BIP 32 path
-  - Sign a basic Boilerplate transaction given a BIP 32 path and raw transaction
-  - Retrieve the Boilerplate app version
-  - Retrieve the Boilerplate app name
+  - Get a public Phantasma address given a BIP 32 path
+  - Sign a basic Phantasma transaction given a BIP 32 path and raw transaction
+  - Retrieve the Phantasma app version
+  - Retrieve the Phantasma app name
 
 The application interface can be accessed over HID or BLE
 
 ## APDUs
 
-### GET BOILERPLATE PUBLIC ADDRESS
+### GET PHANTASMA PUBLIC ADDRESS
 
 #### Description
 
@@ -54,11 +54,11 @@ The address can be optionally checked on the device before being returned.
 | Chain code                                                       | var    |
 
 
-### SIGN BOILERPLATE TRANSACTION
+### SIGN PHANTASMA TRANSACTION
 
 #### Description
 
-This command signs a Boilerplate transaction after having the user validate the transactions parameters.
+This command signs a Phantasma transaction after having the user validate the transactions parameters.
 
 The input data is the RLP encoded transaction streamed to the device in 255 bytes maximum data chunks.
 
@@ -100,7 +100,7 @@ The input data is the RLP encoded transaction streamed to the device in 255 byte
 
 #### Description
 
-This command returns boilerplate application version
+This command returns Phantasma application version
 
 #### Coding
 
@@ -127,7 +127,7 @@ None
 
 #### Description
 
-This command returns boilerplate application name
+This command returns Phantasma application name
 
 #### Coding
 
