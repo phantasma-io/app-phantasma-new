@@ -9,25 +9,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Inital commit with the brand new Phantasma application
+- Initial commit with the brand new Phantasma application.
 
 ## [1.0.1] - 2023-11-20
 
 ### Added
 - Added a method to get all of the number of args.
-- Added a new enum
-- Added a new Button to the UI Display Address
+- Added a new enum.
+- Added a new Button to the UI Display Address.
 
 ### Fixed
-- Fixed Path to generate phantasma address;
-- Crypto.c upgraded generations and added missing expections;
-- GetPublicKey revamped public key generation;
-- Fixed encoded address length;
-- Fixed displayed transaction data;
+- Fixed Path to generate phantasma address.
+- Crypto.c upgraded generations and added missing exceptions.
+- GetPublicKey revamped public key generation.
+- Fixed encoded address length.
+- Fixed displayed transaction data.
 
 ### Changed
 - Updated Gitignore.
-- Updated depracated methods (added no_throw).
+- Updated deprecated methods (added no_throw).
 - Updated Python Tests.
 - Updated git workflows.
 - Changed the transaction to have the transaction type, name of the contract and method.
@@ -41,7 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Added Commands example.
-- Added Offsets
+- Added Offsets.
 - Added crypto.c
 
 ### Fixed
@@ -51,9 +51,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Revamped application to new boilerplate release.
-- Updated app_main
-- Updated Globals
-- Updated depencencies
+- Updated app_main.
+- Updated Globals.
+- Updated dependencies.
 - Updated send_response to feature phantasma.
 - Updated tests to align with our coding methodology.
 
