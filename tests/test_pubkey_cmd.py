@@ -45,9 +45,9 @@ def test_get_public_key_confirm_accepted(firmware, backend, navigator, test_name
     response = client.get_async_response().data
     _, public_key, _, chain_code = unpack_get_public_key_response(response)
 
-    '''ref_public_key, ref_chain_code = calculate_public_key_and_chaincode(CurveChoice.Secp256k1, path=path)
+    ref_public_key, ref_chain_code = calculate_public_key_and_chaincode(CurveChoice.Secp256k1, path=path)
     assert public_key.hex() == ref_public_key
-    assert chain_code.hex() == ref_chain_code'''
+    assert chain_code.hex() == ref_chain_code
 
 
 # In this test we check that the GET_PUBLIC_KEY in confirmation mode replies an error if the user refuses
