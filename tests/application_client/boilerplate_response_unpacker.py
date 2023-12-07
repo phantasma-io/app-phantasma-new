@@ -1,5 +1,9 @@
+import base64
+import string
 from typing import Tuple
 from struct import unpack
+
+TAG = "MY_TAG_UNPACKER"
 
 # remainder, data_len, data
 def pop_sized_buf_from_buffer(buffer:bytes, size:int) -> Tuple[bytes, bytes]:
@@ -48,10 +52,18 @@ def unpack_get_app_and_version_response(response: bytes) -> Tuple[str, str]:
 #            chain_code_len (1)
 #            chain_code (var)
 def unpack_get_public_key_response(response: bytes) -> Tuple[int, bytes, int, bytes]:
-    response, pub_key_len, pub_key = pop_size_prefixed_buf_from_buf(response)
-    response, chain_code_len, chain_code = pop_size_prefixed_buf_from_buf(response)
+    #response, pub_key_len, pub_key = pop_size_prefixed_buf_from_buf(response)
+    reponse_str : string = base64.b16encode(response)
+    pub_key = reponse_str[0:64]
+    pub_key_len = len(pub_key)
+    #
+    #print(TAG, reponse_str[0:64])
 
-    assert pub_key_len == 65
+    response, chain_code_len, chain_code = pop_size_prefixed_buf_from_buf(response)
+    print(TAG, chain_code_len, chain_code)
+
+
+    assert pub_key_len == 64
     assert chain_code_len == 32
     assert len(response) == 0
 

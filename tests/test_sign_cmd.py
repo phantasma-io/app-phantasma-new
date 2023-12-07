@@ -17,7 +17,7 @@ def test_sign_tx_short_tx(firmware, backend, navigator, test_name):
     # Use the app interface instead of raw interface
     client = BoilerplateCommandSender(backend)
     # The path used for this entire test
-    path: str = "m/44'/1'/0'/0/0"
+    path: str = "m/44'/60'/0'/0/0"
 
     # First we need to get the public key of the device in order to build the transaction
     rapdu = client.get_public_key(path=path)
