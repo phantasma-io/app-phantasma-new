@@ -17,5 +17,5 @@ void ui_menu_about(void);
 
 /**
  * Show user Public key.
-*/
+ */
 void ui_menu_pubkey(void);

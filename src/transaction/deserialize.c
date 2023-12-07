@@ -24,7 +24,6 @@
 #include "utils.h"
 #include "types.h"
 
-
 parser_status_e read_opcode(buffer_t *script_buf, uint8_t *opcode) {
     bool flag = buffer_read_u8(script_buf, opcode);
     return flag;
@@ -164,7 +163,7 @@ uint8_t get_number_of_args_contract(buffer_t script_buf) {
     uint8_t reg, type, buf_len;
     uint8_t opcode;
     while (script_buf.offset < script_buf.offset + sizeof(buffer_t) * ADDRESS_LEN) {
-        //read_load_push(script_buf, &args[ix])
+        // read_load_push(script_buf, &args[ix])
         if (!read_opcode(&script_buf, &opcode)) {
             break;
         }
@@ -182,20 +181,17 @@ uint8_t get_number_of_args_contract(buffer_t script_buf) {
                 break;
             }
             buffer_seek_cur(&script_buf, buf_len);
-        }
-        else if ( opcode == 3) // PUSH
+        } else if (opcode == 3)  // PUSH
         {
             if (!buffer_read_u8(&script_buf, &reg)) {
                 break;
             }
 
-        // CTX  OR EXTCALL
-        }else if ( opcode == 45){
+            // CTX  OR EXTCALL
+        } else if (opcode == 45) {
             args -= 2;
             break;
-        }
-        else if (  opcode == 7)
-        {
+        } else if (opcode == 7) {
             args -= 1;
             break;
         }
@@ -204,13 +200,12 @@ uint8_t get_number_of_args_contract(buffer_t script_buf) {
     return args;
 }
 
-bool is_interop(buffer_t script_buf)
-{
+bool is_interop(buffer_t script_buf) {
     bool isInterop = 0;
     uint8_t reg, type, buf_len;
     uint8_t opcode;
     while (script_buf.offset < script_buf.offset + sizeof(buffer_t) * ADDRESS_LEN) {
-        //read_load_push(script_buf, &args[ix])
+        // read_load_push(script_buf, &args[ix])
         if (!read_opcode(&script_buf, &opcode)) {
             break;
         }
@@ -227,19 +222,16 @@ bool is_interop(buffer_t script_buf)
                 break;
             }
             buffer_seek_cur(&script_buf, buf_len);
-        }
-        else if ( opcode == 3) // PUSH
+        } else if (opcode == 3)  // PUSH
         {
             if (!buffer_read_u8(&script_buf, &reg)) {
                 break;
             }
 
-        // CTX  OR EXTCALL
-        }else if ( opcode == 45){
+            // CTX  OR EXTCALL
+        } else if (opcode == 45) {
             break;
-        }
-        else if (  opcode == 7 )
-        {
+        } else if (opcode == 7) {
             isInterop = 1;
             break;
         }
@@ -251,7 +243,8 @@ bool is_interop(buffer_t script_buf)
 parser_status_e read_contract(buffer_t *script_buf, contract_t *contract) {
     contract->args_len = get_number_of_args_contract(*script_buf);
 
-    parser_status_e method_args_status = read_method_args(script_buf, contract->args, contract->args_len);
+    parser_status_e method_args_status =
+        read_method_args(script_buf, contract->args, contract->args_len);
     if (method_args_status != PARSING_OK) {
         return method_args_status;
     }
@@ -315,23 +308,23 @@ parser_status_e script_deserialize(buffer_t *script_buf,
     parser_status_e allow_gas_status = read_contract(script_buf, allow_gas);
     if (allow_gas_status != PARSING_OK) {
         //*type = TRANSACTION_TYPE_CUSTOM;
-        //return allow_gas_status;
+        // return allow_gas_status;
     }
 
-    if (is_interop(*script_buf)){
+    if (is_interop(*script_buf)) {
         parser_status_e read_transfer_tokens_status = read_interop(script_buf, transfer_tokens);
         if (read_transfer_tokens_status != PARSING_OK) {
             // return read_transfer_tokens_status;
         }
-    }else {
+    } else {
         *type = TRANSACTION_TYPE_CUSTOM;
         parser_status_e read_call_contract_status = read_contract(script_buf, contract_call);
         if (read_call_contract_status != PARSING_OK) {
             return read_call_contract_status;
-            //memmove(&script_buf->offset, &offset, sizeof(&script_buf->offset));
+            // memmove(&script_buf->offset, &offset, sizeof(&script_buf->offset));
         }
     }
-    
+
     parser_status_e read_spend_gas_status = read_contract(script_buf, spend_gas);
     if (read_spend_gas_status != PARSING_OK) {
         // return read_spend_gas_status;
@@ -344,19 +337,23 @@ parser_status_e script_deserialize(buffer_t *script_buf,
     //    return (script_buf->offset == script_buf->size) ? PARSING_OK : SCRIPT_UNDERFLOW_ERROR;
 }
 
-void process_load_push_array(const load_push_t* array, size_t array_size, char* result, size_t result_size) {
+void process_load_push_array(const load_push_t *array,
+                             size_t array_size,
+                             char *result,
+                             size_t result_size) {
     if (result_size == 0) {
-        return; // No space to write anything
+        return;  // No space to write anything
     }
 
     memset(result, 0, result_size);
-    char* current_pos = result;
+    char *current_pos = result;
     size_t remaining_size = result_size;
 
     for (int i = array_size - 1; i >= 0; --i) {
         size_t to_copy = array[i].load.buf.size;
-        
-        // Adjust to_copy to fit into the remaining buffer space, leave space for the comma and null terminator
+
+        // Adjust to_copy to fit into the remaining buffer space, leave space for the comma and null
+        // terminator
         if (to_copy >= remaining_size - 2) {
             to_copy = remaining_size - 2;
         }
@@ -452,7 +449,7 @@ parser_status_e transaction_deserialize(buffer_t *buf, transaction_t *tx) {
     if (tx->payload_len == 0) {
         return PAYLOAD_ZERO_ERROR;
     }
-    
+
     tx->payload = (uint8_t *) (buf->ptr + buf->offset);
     if (!buffer_seek_cur(buf, tx->payload_len)) {
         return PAYLOAD_PARSING_ERROR;
@@ -465,20 +462,20 @@ parser_status_e transaction_deserialize(buffer_t *buf, transaction_t *tx) {
     tx->gas_limit_len = tx->allow_gas.args[0].load.buf.size;
 
     // Handle a Transfer Tokens
-    //tx->type = 1;
+    // tx->type = 1;
     if (tx->type == TRANSACTION_TYPE_TRANSFER) {
         //'Runtime.TransferTokens', [from(3), to(2), tokenName(1), amount(0)])
         tx->from = (uint8_t *) tx->transfer_tokens.args[3].load.buf.ptr;
         tx->from_len = tx->transfer_tokens.args[3].load.buf.size;
-        tx->to = (uint8_t *) tx->transfer_tokens.args[2].load.buf.ptr; // 2
-        tx->to_len = tx->transfer_tokens.args[2].load.buf.size; //2
+        tx->to = (uint8_t *) tx->transfer_tokens.args[2].load.buf.ptr;  // 2
+        tx->to_len = tx->transfer_tokens.args[2].load.buf.size;         // 2
 
-        tx->value = (uint8_t *) tx->transfer_tokens.args[0].load.buf.ptr; // Was 0 
-        tx->value_len = tx->transfer_tokens.args[0].load.buf.size; // Was 0
+        tx->value = (uint8_t *) tx->transfer_tokens.args[0].load.buf.ptr;  // Was 0
+        tx->value_len = tx->transfer_tokens.args[0].load.buf.size;         // Was 0
 
         tx->token = (uint8_t *) tx->transfer_tokens.args[1].load.buf.ptr;
         tx->token_len = tx->transfer_tokens.args[1].load.buf.size;
-    } else if ( tx->type == TRANSACTION_TYPE_CUSTOM ){
+    } else if (tx->type == TRANSACTION_TYPE_CUSTOM) {
         // Handle Stake Tokens
         tx->name = (uint8_t *) tx->contract_call.name.buf.ptr;
         tx->name_len = tx->contract_call.name.buf.size;
@@ -487,17 +484,18 @@ parser_status_e transaction_deserialize(buffer_t *buf, transaction_t *tx) {
 
         tx->output_args_len = 240;
         char output_args[240] = {0};
-        process_load_push_array(tx->contract_call.args, tx->contract_call.args_len, output_args, tx->output_args_len);
-        //reverse_string(&output_args);
+        process_load_push_array(tx->contract_call.args,
+                                tx->contract_call.args_len,
+                                output_args,
+                                tx->output_args_len);
+        // reverse_string(&output_args);
         tx->output_args = (uint8_t *) output_args;
-    }else {
-        
+    } else {
         return script_deserialize_status;
     }
 
     return PARSING_OK;
 }
-
 
 /*
 parser_status_e transaction_deserialize(buffer_t *buf, transaction_t *tx) {

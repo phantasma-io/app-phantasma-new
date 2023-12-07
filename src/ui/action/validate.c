@@ -34,12 +34,12 @@ void validate_pubkey(bool choice) {
         io_send_sw(SW_DENY);
     }
 
-    //ui_menu_main();
+    // ui_menu_main();
 }
 
 static int crypto_sign_message(void) {
     uint32_t info = 0;
-    size_t sig_len = SIG_SIZE; //sizeof(G_context.tx_info.signature);
+    size_t sig_len = SIG_SIZE;  // sizeof(G_context.tx_info.signature);
 
     cx_err_t error = bip32_derive_ecdsa_sign_hash_256(CX_CURVE_256K1,
                                                       G_context.bip32_path,
@@ -51,7 +51,7 @@ static int crypto_sign_message(void) {
                                                       G_context.tx_info.signature,
                                                       &sig_len,
                                                       &info);
-    
+
     if (error != CX_OK) {
         return -1;
     }
@@ -59,7 +59,7 @@ static int crypto_sign_message(void) {
     PRINTF("Signature: %.*H\n", sig_len, G_context.tx_info.signature);
 
     G_context.tx_info.signature_len = sig_len;
-    G_context.tx_info.v = (uint8_t)(info & CX_ECCINFO_PARITY_ODD);
+    G_context.tx_info.v = (uint8_t) (info & CX_ECCINFO_PARITY_ODD);
 
     return 0;
 }

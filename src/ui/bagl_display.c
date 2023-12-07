@@ -43,7 +43,7 @@ static char g_address[240];
 static char g_token[TOKEN_LEN];
 static char g_contract[TOKEN_LEN];
 static char g_contract_method[CONTRACT_METHOD_LEN];
-//static char g_contract_method_args[64];
+// static char g_contract_method_args[64];
 static char g_nexus[NEXUS_LEN];
 static char g_chain[CHAIN_LEN];
 static char g_txlength[TXLENGTH_LEN];
@@ -147,7 +147,7 @@ int ui_display_address() {
         return io_send_sw(SW_BAD_STATE);
     }
 
-     memset(g_bip32_path, 0, sizeof(g_bip32_path));
+    memset(g_bip32_path, 0, sizeof(g_bip32_path));
     if (!bip32_path_format(G_context.bip32_path,
                            G_context.bip32_path_len,
                            g_bip32_path,
@@ -209,7 +209,7 @@ int ui_display_transaction() {
         return io_send_sw(SW_BAD_STATE);
     }
 
-     memset(g_txlength, 0, sizeof(g_txlength));
+    memset(g_txlength, 0, sizeof(g_txlength));
     format_u64(g_txlength, sizeof(g_txlength), G_context.tx_info.raw_tx_len);
 
     memset(g_nexus, 0, sizeof(g_nexus));
@@ -222,10 +222,10 @@ int ui_display_transaction() {
     format_u64(g_scriptlength, sizeof(g_scriptlength), G_context.tx_info.transaction.script_len);
 
     memset(g_amount, 0, sizeof(g_amount));
-    //char amount[255] = {0};
+    // char amount[255] = {0};
     memmove(g_amount, G_context.tx_info.transaction.value, G_context.tx_info.transaction.value_len);
-    //snprintf(g_amount, sizeof(g_amount), "%.*s", sizeof(amount), amount);
-    //PRINTF("Amount: %s\n", g_amount);
+    // snprintf(g_amount, sizeof(g_amount), "%.*s", sizeof(amount), amount);
+    // PRINTF("Amount: %s\n", g_amount);
 
     memset(g_address, 0, sizeof(g_address));
     memmove(g_address, G_context.tx_info.transaction.to, G_context.tx_info.transaction.to_len);
@@ -236,7 +236,6 @@ int ui_display_transaction() {
     memmove(g_token, G_context.tx_info.transaction.token, G_context.tx_info.transaction.token_len);
     // g_token[0] = 'T';
     // format_u64(g_token + 1, sizeof(g_token) - 1, G_context.tx_info.transaction.token_len);
-
 
     g_validate_callback = &ui_action_validate_transaction;
 
@@ -292,8 +291,8 @@ int ui_display_custom_transaction() {
         return io_send_sw(SW_BAD_STATE);
     }
 
-    //memset(g_txlength, 0, sizeof(g_txlength));
-    //format_u64(g_txlength, sizeof(g_txlength), G_context.tx_info.transaction.allow_gas.args_len);
+    // memset(g_txlength, 0, sizeof(g_txlength));
+    // format_u64(g_txlength, sizeof(g_txlength), G_context.tx_info.transaction.allow_gas.args_len);
 
     memset(g_nexus, 0, sizeof(g_nexus));
     memmove(g_nexus, G_context.tx_info.transaction.nexus, G_context.tx_info.transaction.nexus_len);
@@ -302,19 +301,25 @@ int ui_display_custom_transaction() {
     memmove(g_chain, G_context.tx_info.transaction.chain, G_context.tx_info.transaction.chain_len);
 
     memset(g_contract, 0, sizeof(g_contract));
-    memmove(g_contract, (uint8_t *)  G_context.tx_info.transaction.name, G_context.tx_info.transaction.name_len);
+    memmove(g_contract,
+            (uint8_t *) G_context.tx_info.transaction.name,
+            G_context.tx_info.transaction.name_len);
 
     memset(g_contract_method, 0, sizeof(g_contract_method));
-    memmove(g_contract_method, (uint8_t *)  G_context.tx_info.transaction.method, G_context.tx_info.transaction.method_len);
+    memmove(g_contract_method,
+            (uint8_t *) G_context.tx_info.transaction.method,
+            G_context.tx_info.transaction.method_len);
 
     memset(g_address, 0, sizeof(g_address));
-    memmove(g_address, (uint8_t *)  G_context.tx_info.transaction.output_args, G_context.tx_info.transaction.output_args_len);
+    memmove(g_address,
+            (uint8_t *) G_context.tx_info.transaction.output_args,
+            G_context.tx_info.transaction.output_args_len);
 
-    //memset(g_scriptlength, 0, sizeof(g_scriptlength));
-    //format_u64(g_scriptlength, sizeof(g_scriptlength), G_context.tx_info.transaction.script_len);
+    // memset(g_scriptlength, 0, sizeof(g_scriptlength));
+    // format_u64(g_scriptlength, sizeof(g_scriptlength), G_context.tx_info.transaction.script_len);
 
-    //memset(g_address, 0, sizeof(g_address));
-    //memmove(g_address, G_context.tx_info.transaction.to, G_context.tx_info.transaction.to_len);
+    // memset(g_address, 0, sizeof(g_address));
+    // memmove(g_address, G_context.tx_info.transaction.to, G_context.tx_info.transaction.to_len);
 
     // TODO: Needs to show args from the contract call.
 

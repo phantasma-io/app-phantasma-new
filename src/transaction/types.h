@@ -5,24 +5,24 @@
 
 #include "buffer.h"
 
-#define ADDRESS_LEN      128
-#define NEXUS_LEN        16
-#define CHAIN_LEN        16
-#define SCRIPT_LEN       MAX_TRANSACTION_LEN - (CHAIN_LEN + NEXUS_LEN + PAYLOAD_LEN)
-#define TOKEN_LEN        10
-#define CONTRACT_METHOD_LEN        16
-#define CONTRACT_METHOD_ARGS_LEN   MAX_ARGS_LEN * ADDRESS_LEN
-#define TXLENGTH_LEN     16
-#define SCRIPTLENGTH_LEN 16
-#define PAYLOAD_LEN      64
+#define ADDRESS_LEN              128
+#define NEXUS_LEN                16
+#define CHAIN_LEN                16
+#define SCRIPT_LEN               MAX_TRANSACTION_LEN - (CHAIN_LEN + NEXUS_LEN + PAYLOAD_LEN)
+#define TOKEN_LEN                10
+#define CONTRACT_METHOD_LEN      16
+#define CONTRACT_METHOD_ARGS_LEN MAX_ARGS_LEN *ADDRESS_LEN
+#define TXLENGTH_LEN             16
+#define SCRIPTLENGTH_LEN         16
+#define PAYLOAD_LEN              64
 
-#define MAX_ARGS_LEN             4
-#define ALLOW_GAS_ARGS_LEN       4
-#define STAKING_TOKENS_ARGS_LEN 2
+#define MAX_ARGS_LEN              4
+#define ALLOW_GAS_ARGS_LEN        4
+#define STAKING_TOKENS_ARGS_LEN   2
 #define UNSTAKING_TOKENS_ARGS_LEN 2
-#define TRANSFER_TOKENS_ARGS_LEN 4
-#define INTEROP_CALL_ARGS_LEN 8
-#define SPEND_GAS_ARGS_LEN       1
+#define TRANSFER_TOKENS_ARGS_LEN  4
+#define INTEROP_CALL_ARGS_LEN     8
+#define SPEND_GAS_ARGS_LEN        1
 
 #define MAX_TX_LEN   1020
 #define MAX_MEMO_LEN 465  // 510 - ADDRESS_LEN - 2*SIZE(U64) - SIZE(MAX_VARINT)
@@ -61,10 +61,10 @@ typedef enum {
     PAYLOAD_PARSING_ERROR = 0xC2,
 
     TOKEN_PARSING_ERROR = 0xB0,
-    //TO_PARSING_ERROR = 0xB1,
-    // VALUE_PARSING_ERROR = 0xB2,
-    // GAS_PRICE_PARSING_ERROR = 0xB3,
-    // GAS_LIMIT_PARSING_ERROR = 0xB4,
+    // TO_PARSING_ERROR = 0xB1,
+    //  VALUE_PARSING_ERROR = 0xB2,
+    //  GAS_PRICE_PARSING_ERROR = 0xB3,
+    //  GAS_LIMIT_PARSING_ERROR = 0xB4,
 
     LENGTH_UNDERFLOW_ERROR = 0xA0,
     LENGTH_OVERFLOW_ERROR = 0xA1,
@@ -135,9 +135,9 @@ typedef struct {
 } interop_t;
 
 typedef struct {
-    uint64_t nonce;     /// nonce (8 bytes)
-    //uint64_t value;     /// amount value (8 bytes)
-    //uint8_t *to;        /// pointer to address (20 bytes)
+    uint64_t nonce;  /// nonce (8 bytes)
+    // uint64_t value;     /// amount value (8 bytes)
+    // uint8_t *to;        /// pointer to address (20 bytes)
     uint8_t *memo;      /// memo (variable length)
     uint64_t memo_len;  /// length of memo (8 bytes)
 
@@ -179,6 +179,6 @@ typedef struct {
     end_t end;
 
     transaction_type_e type;
-    uint8_t* output_args;
+    uint8_t *output_args;
     uint8_t output_args_len;
 } transaction_t;

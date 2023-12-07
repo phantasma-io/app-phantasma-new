@@ -61,15 +61,17 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
         G_context.tx_info.raw_tx_len += cdata->size;
 
         size_t resp_size = G_context.tx_info.raw_tx_len;
+        /*
         size_t offset = 0;
         if (G_context.tx_info.raw_tx_len > IO_APDU_BUFFER_SIZE - 2) {
             offset = G_context.tx_info.raw_tx_len - (IO_APDU_BUFFER_SIZE - 2);
         }
+        */
         if (more) {
             // more APDUs with transaction part are expected.
             // Send a SW_OK to signal that we have received the chunk
-            //return io_send_sw(SW_OK);
-            return io_send_response_pointer(G_context.tx_info.raw_tx,resp_size,SW_OK);
+            // return io_send_sw(SW_OK);
+            return io_send_response_pointer(G_context.tx_info.raw_tx, resp_size, SW_OK);
 
         } else {
             // last APDU for this transaction, let's parse, display and request a sign confirmation
@@ -81,19 +83,17 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
             parser_status_e status = transaction_deserialize(&buf, &G_context.tx_info.transaction);
             PRINTF("Parsing status: %d.\n", status);
             if (status != PARSING_OK) {
-                //return io_send_sw(SW_TX_PARSING_FAIL);
+                // return io_send_sw(SW_TX_PARSING_FAIL);
                 uint8_t resp[1] = {0};
                 resp[0] = status;
                 return io_send_response_pointer(resp, sizeof(resp), SW_TX_PARSING_FAIL);
-                    
             }
 
             G_context.state = STATE_PARSED;
 
-            if ( G_context.tx_info.transaction.type == TRANSACTION_TYPE_CUSTOM)
-            {
+            if (G_context.tx_info.transaction.type == TRANSACTION_TYPE_CUSTOM) {
                 return ui_display_custom_transaction();
-            }else {
+            } else {
                 return ui_display_transaction();
             }
 

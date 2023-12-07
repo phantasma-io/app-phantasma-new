@@ -1,8 +1,6 @@
-[![Ensure compliance with Ledger guidelines](https://github.com/LedgerHQ/app-boilerplate/actions/workflows/guidelines_enforcer.yml/badge.svg)](https://github.com/LedgerHQ/app-boilerplate/actions/workflows/guidelines_enforcer.yml) [![Build and run functional tests using ragger through reusable workflow](https://github.com/LedgerHQ/app-boilerplate/actions/workflows/build_and_functional_tests.yml/badge.svg?branch=master)](https://github.com/LedgerHQ/app-boilerplate/actions/workflows/build_and_functional_tests.yml)
+# About
 
-# Ledger Boilerplate Application
-
-This is a boilerplate application which can be forked to start a new project for the Ledger Nano S/X/SP and Stax.
+Phantasma wallet application framework for Nano S, Nano S Plus and Nano X.
 
 ## Quick start guide
 
@@ -18,8 +16,8 @@ It will allow you, whether you are developing on macOS, Windows or Linux to quic
     * On macOS, install and launch [XQuartz](https://www.xquartz.org/) (make sure to go to XQuartz > Preferences > Security and check "Allow client connections").
     * On Windows, install and launch [VcXsrv](https://sourceforge.net/projects/vcxsrv/) (make sure to configure it to disable access control).
 * Install [VScode](https://code.visualstudio.com/download) and add [Ledger's extension](https://marketplace.visualstudio.com/items?itemName=LedgerHQ.ledger-dev-tools).
-* Open a terminal and clone `app-boilerplate` with `git clone git@github.com:LedgerHQ/app-boilerplate.git`.
-* Open the `app-boilerplate` folder with VSCode.
+* Open a terminal and clone `app-phantasma` with `git clone https://github.com/phantasma-io/app-phantasma.git`.
+* Open the `app-phantasma` folder with VSCode.
 * Use Ledger extension's sidebar menu or open the tasks menu with `ctrl + shift + b` (`command + shift + b` on a Mac) to conveniently execute actions :
     * Build the app for the device model of your choice with `Build`.
     * Test your binary on [Speculos](https://github.com/LedgerHQ/speculos) with `Run with Speculos`.
@@ -137,7 +135,7 @@ python3 -m ledgerblue.runScript --scp --fileName bin/app.apdu --elfFile bin/app.
 
 ## Test
 
-The boilerplate app comes with functional tests implemented with Ledger's [Ragger](https://github.com/LedgerHQ/ragger) test framework.
+The phantasma app comes with functional tests implemented with Ledger's [Ragger](https://github.com/LedgerHQ/ragger) test framework.
 
 ### macOS / Windows
 
@@ -180,6 +178,9 @@ Or run your app directly with Speculos
 speculos --model nanos build/nanos/bin/app.elf
 ```
 
+To allow speculos access via 127.0.0.1:50 use the following command instead of the 'Update Container' option from Ledger's VS Code extension
+docker container stop  app-phantasma-container; docker container rm  app-phantasma-container; docker pull ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest; docker run --privileged -e DISPLAY='host.docker.internal:0' -p 5000:5000 -v '[app-path]' -t -d --name  app-phantasma-container ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest
+
 ## Documentation
 
 High level documentation such as [application specification](APP_SPECIFICATION.md), [APDU](doc/APDU.md) and [transaction serialization](doc/TRANSACTION.md) are included in developer documentation which can be generated with [doxygen](https://www.doxygen.nl)
@@ -189,6 +190,10 @@ doxygen .doxygen/Doxyfile
 ```
 
 the process outputs HTML and LaTeX documentations in `doc/html` and `doc/latex` folders.
+
+For a smooth and quick integration:
+- See the developers’ documentation on the [Developer Portal](https://developers.ledger.com/), and
+- [Go on Discord](https://developers.ledger.com/discord-pro/) to chat with developer support and the developer community.
 
 ## Continuous Integration
 
@@ -206,12 +211,3 @@ It outputs 3 artifacts:
 - `compiled_app_binaries` within binary files of the build process for each device
 - `code-coverage` within HTML details of code coverage
 - `documentation` within HTML auto-generated documentation
-
-## Are you developing a Nano S, S Plus, X application?
-
-If so, This boilerplate will help you get started.
-
-For a smooth and quick integration:
-
-- See the developers’ documentation on the [Developer Portal](https://developers.ledger.com/), and
-- [Go on Discord](https://developers.ledger.com/discord-pro/) to chat with developer support and the developer community.

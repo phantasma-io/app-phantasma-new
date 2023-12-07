@@ -53,7 +53,7 @@ def unpack_get_app_and_version_response(response: bytes) -> Tuple[str, str]:
 #            chain_code (var)
 def unpack_get_public_key_response(response: bytes) -> Tuple[int, bytes, int, bytes]:
     #response, pub_key_len, pub_key = pop_size_prefixed_buf_from_buf(response)
-    reponse_str : string = base64.b16encode(response)
+    reponse_str = base64.b16encode(response)
     pub_key = reponse_str[0:64]
     pub_key_len = len(pub_key)
     #

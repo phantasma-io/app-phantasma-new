@@ -32,23 +32,24 @@ int crypto_derive_private_key(cx_ecfp_private_key_t *private_key,
     BEGIN_TRY {
         TRY {
             // Derive the seed with bip32_path
-            cx_err_t bip32_nt =  os_derive_bip32_no_throw(CX_CURVE_256K1, //Changed to Ed25519 to match public key curve CX_CURVE_256K1
-                                       bip32_path,
-                                       bip32_path_len,
-                                       raw_private_key,
-                                       NULL);
+            cx_err_t bip32_nt = os_derive_bip32_no_throw(
+                CX_CURVE_256K1,  // Changed to Ed25519 to match public key curve CX_CURVE_256K1
+                bip32_path,
+                bip32_path_len,
+                raw_private_key,
+                NULL);
 
-            if (bip32_nt == CX_INTERNAL_ERROR) return -1; //THROW(-1);                                                      
-            
+            if (bip32_nt == CX_INTERNAL_ERROR) return -1;  // THROW(-1);
+
             // Initialize new private_key from raw
-            cx_err_t privKey_nt = cx_ecfp_init_private_key_no_throw(CX_CURVE_Ed25519, // Ensuring curve consistency
-                                     raw_private_key,
-                                     32,
-                                     private_key);
+            cx_err_t privKey_nt =
+                cx_ecfp_init_private_key_no_throw(CX_CURVE_Ed25519,  // Ensuring curve consistency
+                                                  raw_private_key,
+                                                  32,
+                                                  private_key);
 
-            if ( privKey_nt == CX_EC_INVALID_CURVE) return -2;
-            if ( privKey_nt == CX_INVALID_PARAMETER) return -3;
-
+            if (privKey_nt == CX_EC_INVALID_CURVE) return -2;
+            if (privKey_nt == CX_INVALID_PARAMETER) return -3;
         }
         CATCH_OTHER(e) {
             THROW(e);
@@ -62,33 +63,38 @@ int crypto_derive_private_key(cx_ecfp_private_key_t *private_key,
     return 0;
 }
 
-int crypto_init_public_key(cx_ecfp_private_key_t *private_key, cx_ecfp_public_key_t *public_key, uint8_t raw_public_key[static 64]) {
+int crypto_init_public_key(cx_ecfp_private_key_t *private_key,
+                           cx_ecfp_public_key_t *public_key,
+                           uint8_t raw_public_key[static 64]) {
     // Generate corresponding public key
-    cx_err_t initPubKey_nt = cx_ecfp_init_public_key_no_throw(CX_CURVE_Ed25519, NULL, 0, public_key);
-    if ( initPubKey_nt == CX_EC_INVALID_CURVE) return -11;
-    if ( initPubKey_nt == INVALID_PARAMETER ) return -12;
-    
-    cx_err_t pubKey_nt = cx_ecfp_generate_pair_no_throw(CX_CURVE_Ed25519, public_key, private_key, 1);
-    if ( pubKey_nt == CX_EC_INVALID_CURVE) return -1;
-    if ( pubKey_nt == CX_NOT_UNLOCKED ) return -2;
-    if ( pubKey_nt == CX_INVALID_PARAMETER_SIZE ) return -3;
-    if ( pubKey_nt == CX_NOT_LOCKED ) return -4;
-    if ( pubKey_nt == CX_INVALID_PARAMETER ) return -5;
-    if ( pubKey_nt == CX_INTERNAL_ERROR ) return -6;    
-    if ( pubKey_nt == CX_EC_INVALID_POINT ) return -7;
-    if ( pubKey_nt == CX_EC_INFINITE_POINT ) return -8;
-    
-    cx_err_t edwards_nt = cx_edwards_compress_point_no_throw(CX_CURVE_Ed25519, public_key->W, public_key->W_len);
-    if ( edwards_nt == CX_EC_INVALID_CURVE) return -21;
-    if ( edwards_nt == CX_NOT_UNLOCKED ) return -22;
-    if ( edwards_nt == CX_INVALID_PARAMETER_SIZE ) return -23;
-    if ( edwards_nt == CX_NOT_LOCKED ) return -24;
-    if ( edwards_nt == CX_INVALID_PARAMETER ) return -25;  
-    if ( edwards_nt == CX_EC_INFINITE_POINT ) return -26;
+    cx_err_t initPubKey_nt =
+        cx_ecfp_init_public_key_no_throw(CX_CURVE_Ed25519, NULL, 0, public_key);
+    if (initPubKey_nt == CX_EC_INVALID_CURVE) return -11;
+    if (initPubKey_nt == INVALID_PARAMETER) return -12;
+
+    cx_err_t pubKey_nt =
+        cx_ecfp_generate_pair_no_throw(CX_CURVE_Ed25519, public_key, private_key, 1);
+    if (pubKey_nt == CX_EC_INVALID_CURVE) return -1;
+    if (pubKey_nt == CX_NOT_UNLOCKED) return -2;
+    if (pubKey_nt == CX_INVALID_PARAMETER_SIZE) return -3;
+    if (pubKey_nt == CX_NOT_LOCKED) return -4;
+    if (pubKey_nt == CX_INVALID_PARAMETER) return -5;
+    if (pubKey_nt == CX_INTERNAL_ERROR) return -6;
+    if (pubKey_nt == CX_EC_INVALID_POINT) return -7;
+    if (pubKey_nt == CX_EC_INFINITE_POINT) return -8;
+
+    cx_err_t edwards_nt =
+        cx_edwards_compress_point_no_throw(CX_CURVE_Ed25519, public_key->W, public_key->W_len);
+    if (edwards_nt == CX_EC_INVALID_CURVE) return -21;
+    if (edwards_nt == CX_NOT_UNLOCKED) return -22;
+    if (edwards_nt == CX_INVALID_PARAMETER_SIZE) return -23;
+    if (edwards_nt == CX_NOT_LOCKED) return -24;
+    if (edwards_nt == CX_INVALID_PARAMETER) return -25;
+    if (edwards_nt == CX_EC_INFINITE_POINT) return -26;
 
     // Check public_key->W_len before copying
     explicit_bzero(raw_public_key, 64);
-    memmove(raw_public_key, public_key->W + 1, 64); // Copy only the actual length of W
+    memmove(raw_public_key, public_key->W + 1, 64);  // Copy only the actual length of W
 
     return 0;
 }
@@ -127,7 +133,7 @@ int crypto_sign_message(uint16_t *resp_word) {
     G_context.tx_info.signature_len = sig_size;
 
     uint32_t info = 0;
-    G_context.tx_info.v = (uint8_t)(info & CX_ECCINFO_PARITY_ODD);
+    G_context.tx_info.v = (uint8_t) (info & CX_ECCINFO_PARITY_ODD);
 
     return 0;
 }

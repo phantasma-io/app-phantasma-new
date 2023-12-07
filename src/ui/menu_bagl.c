@@ -67,16 +67,16 @@ void ui_menu_about() {
     ux_flow_init(0, ux_menu_about_flow, NULL);
 }
 
-
-UX_STEP_NOCB(ux_menu_publickey_step, bnnn_paging, {
-    .title = "Address",
-    .text = g_address,
-});
+UX_STEP_NOCB(ux_menu_publickey_step,
+             bnnn_paging,
+             {
+                 .title = "Address",
+                 .text = g_address,
+             });
 
 UX_FLOW(ux_menu_publickey_flow, &ux_menu_publickey_step, &ux_menu_back_step, FLOW_LOOP);
 
 void ui_menu_pubkey() {
-    
     explicit_bzero(&G_context, sizeof(G_context));
     G_context.req_type = CONFIRM_ADDRESS;
     G_context.state = STATE_NONE;
@@ -88,7 +88,7 @@ void ui_menu_pubkey() {
     if (!address_from_pubkey(G_context.pk_info.raw_public_key, address, sizeof(address))) {
         // Handle Errors here.
     }
-    
+
     memmove(g_address, address, ADDRESS_LEN);
 
     ux_flow_init(0, ux_menu_publickey_flow, NULL);

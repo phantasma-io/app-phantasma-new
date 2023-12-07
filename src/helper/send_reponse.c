@@ -27,7 +27,7 @@
 #include "../sw.h"
 
 int helper_send_response_pubkey() {
-    //uint8_t resp[1 + PUBKEY_LEN + 1 + CHAINCODE_LEN] = {0};
+    // uint8_t resp[1 + PUBKEY_LEN + 1 + CHAINCODE_LEN] = {0};
     uint8_t resp[PUBKEY_LEN] = {0};
     size_t offset = 0;
 
@@ -53,5 +53,7 @@ int helper_send_response_sig() {
     offset += G_context.tx_info.signature_len;
     resp[offset++] = (uint8_t) G_context.tx_info.v;*/
 
-    return io_send_response_pointer(G_context.tx_info.signature,  G_context.tx_info.signature_len, SW_OK);
+    return io_send_response_pointer(G_context.tx_info.signature,
+                                    G_context.tx_info.signature_len,
+                                    SW_OK);
 }
