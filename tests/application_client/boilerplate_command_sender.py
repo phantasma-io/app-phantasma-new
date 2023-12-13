@@ -122,6 +122,7 @@ class BoilerplateCommandSender:
                                          p2=P2.P2_LAST,
                                          data=messages[-1]) as response:
             yield response
+        print ("sign_tx: ", response)
 
     def get_async_response(self) -> Optional[RAPDU]:
         return self.backend.last_async_response

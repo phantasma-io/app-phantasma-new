@@ -178,7 +178,7 @@ Or run your app directly with Speculos
 speculos --model nanos build/nanos/bin/app.elf
 ```
 
-To allow speculos access via 127.0.0.1:50 use the following command instead of the 'Update Container' option from Ledger's VS Code extension
+To allow speculos access via 127.0.0.1:5000 use the following command instead of the 'Update Container' option from Ledger's VS Code extension
 docker container stop  app-phantasma-container; docker container rm  app-phantasma-container; docker pull ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest; docker run --privileged -e DISPLAY='host.docker.internal:0' -p 5000:5000 -v '[app-path]' -t -d --name  app-phantasma-container ghcr.io/ledgerhq/ledger-app-builder/ledger-app-dev-tools:latest
 
 ## Documentation

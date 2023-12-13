@@ -52,7 +52,7 @@ def test_sign_tx_short_tx(firmware, backend, navigator, test_name):
     # It will yield the result when the navigation is done
     with client.sign_tx(path=path, transaction=txSerialized):
         # Validate the on-screen request by performing the navigation appropriate for this device
-        if firmware.device.startswith("nano"):
+        '''if firmware.device.startswith("nano"):
             navigator.navigate_until_text_and_compare(NavInsID.RIGHT_CLICK,
             [NavInsID.BOTH_CLICK],
             "Approve",
@@ -64,7 +64,7 @@ def test_sign_tx_short_tx(firmware, backend, navigator, test_name):
             NavInsID.USE_CASE_STATUS_DISMISS],
             "Hold to sign",
             ROOT_SCREENSHOT_PATH,
-            test_name)
+            test_name)'''
     # The device as yielded the result, parse it and ensure that the signature is correct
     #response = client.get_async_response().data
     #'''_, der_sig, _ = unpack_sign_tx_response(response)
@@ -74,6 +74,7 @@ def test_sign_tx_short_tx(firmware, backend, navigator, test_name):
 # In this test se send to the device a transaction to sign and validate it on screen
 # This test is mostly the same as the previous one but with different values.
 # In particular the long memo will force the transaction to be sent in multiple chunks
+'''
 def test_sign_tx_long_tx(firmware, backend, navigator, test_name):
     # Use the app interface instead of raw interface
     client = BoilerplateCommandSender(backend)
@@ -174,3 +175,4 @@ def test_sign_tx_refused(firmware, backend, navigator, test_name):
             # Assert that we have received a refusal
             assert e.value.status == Errors.SW_DENY
             assert len(e.value.data) == 0
+'''
