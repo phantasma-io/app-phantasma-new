@@ -48,7 +48,7 @@ endif
 # https://developers.ledger.com/docs/embedded-app/design-requirements/#device-icon
 
 ICON_NANOS = icons/nanos_app_phantasma.gif #16x16
-ICON_NANOSP = icons/nanos_app_phantasma.gif #14x14
+ICON_NANOSP = icons/nanox_app_phantasma.gif #14x14
 ICON_NANOX = icons/nanox_app_phantasma.gif #14x14
 ICON_STAX = icons/stax_app_phantasma.gif #32x32
 
