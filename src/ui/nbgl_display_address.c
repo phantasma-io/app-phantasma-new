@@ -1,6 +1,6 @@
 /*****************************************************************************
  *   Ledger App Boilerplate.
- *   (c) 2020 Ledger SAS.
+ *   (c) 2020 Phantasma SAS.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@
 #include "../transaction/types.h"
 #include "../menu.h"
 
-static char g_address[43];
+static char g_address[ADDRESS_LEN];
 
 static void confirm_address_rejection(void) {
     // display a status page and go back to main
@@ -73,9 +73,11 @@ int ui_display_address() {
         return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
     }
 
-    if (format_hex(address, sizeof(address), g_address, sizeof(g_address)) == -1) {
-        return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
-    }
+    //if (format_hex(address, sizeof(address), g_address, sizeof(g_address)) == -1) {
+    //    return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
+    //}
+
+    memmove(g_address, address, ADDRESS_LEN);
 
     nbgl_useCaseReviewStart(&C_app_phantasma_64px,
                             "Verify Phantasma address",

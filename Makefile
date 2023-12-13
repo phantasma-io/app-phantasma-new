@@ -74,7 +74,7 @@ PATH_APP_LOAD_PARAMS = "44'/60'/0'/0/0"   # purpose=coin(44) / coin_type=Testnet
 #   * It must at least contains one value.
 #   * Values can be the app ticker or anything else but should be unique.
 VARIANT_PARAM = COIN
-VARIANT_VALUES = phantasma phantasma_testnet
+VARIANT_VALUES = phantasma #phantasma_testnet
 
 # Enabling DEBUG flag will enable PRINTF and disable optimizations
 #DEBUG = 1

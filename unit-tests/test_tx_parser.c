@@ -210,7 +210,7 @@ static void test_tx_serialization_v2(void **state) {
 
 
 int main() {
-    const struct CMUnitTest tests[] = {cmocka_unit_test(test_tx_serialization)};
+    const struct CMUnitTest tests[] = {cmocka_unit_test(test_tx_serialization_v2)};
 
     return cmocka_run_group_tests(tests, NULL, NULL);
 }
