@@ -28,7 +28,7 @@
 
 static char g_address[ADDRESS_LEN];
 
-UX_STEP_NOCB(ux_menu_ready_step, pnn, {&C_phantasma_logo, "Phantasma", "is ready"});
+UX_STEP_NOCB(ux_menu_ready_step, pnn, {&C_app_phantasma_16px, "Phantasma", "is ready"});
 UX_STEP_NOCB(ux_menu_version_step, bn, {"Version", APPVERSION});
 UX_STEP_CB(ux_menu_about_step, pb, ui_menu_about(), {&C_icon_certificate, "About"});
 UX_STEP_CB(ux_display_public_step, pb, ui_menu_pubkey(), {&C_icon_certificate, "Display Address"});

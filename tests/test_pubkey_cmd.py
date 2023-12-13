@@ -7,21 +7,22 @@ from ragger.bip import calculate_public_key_and_chaincode, CurveChoice
 from ragger.error import ExceptionRAPDU
 from ragger.navigator import NavInsID, NavIns
 from utils import ROOT_SCREENSHOT_PATH
+from phantasma_py.Types import Address
+from phantasma_py.Types.Extensions import Base16
+from phantasma_py.Utils import get_address_from_public_key
 
-TAG = "MY_TAG"
-
+TAG = "MY_TAG_OWNTHING"
 
 # In this test we check that the GET_PUBLIC_KEY works in non-confirmation mode
 def test_get_public_key_no_confirm(backend):
     for path in ["m/44'/60'/0'/0/0"]:
         client = BoilerplateCommandSender(backend)
         response = client.get_public_key(path=path).data
-        '''_, public_key, _, chain_code = unpack_get_public_key_response(response)
+        response_hex_upper = response.hex().upper()
+        response_hex_upper_based_decoded = response_hex_upper[:64]
 
-        ref_public_key, ref_chain_code = calculate_public_key_and_chaincode(CurveChoice.Secp256k1, path=path)
-        assert public_key.hex() == ref_public_key
-        assert chain_code.hex() == ref_chain_code'''
-
+        addr : Address = get_address_from_public_key(response_hex_upper_based_decoded) 
+        assert addr.Text == "P2KHQ419gj1N5cYvPrpWpp6E5j4tcEixMfzUPWTi4F2qzRa"
 
 # In this test we check that the GET_PUBLIC_KEY works in confirmation mode
 def test_get_public_key_confirm_accepted(firmware, backend, navigator, test_name):
@@ -46,14 +47,11 @@ def test_get_public_key_confirm_accepted(firmware, backend, navigator, test_name
                                            test_name,
                                            instructions)
     response = client.get_async_response().data
-    print(TAG, response)
-    _, public_key, _, chain_code = unpack_get_public_key_response(response)
+    response_hex_upper = response.hex().upper()
+    response_hex_upper_based_decoded = response_hex_upper[:64]
 
-    print(TAG, public_key)
-
-    ref_public_key, ref_chain_code = calculate_public_key_and_chaincode(CurveChoice.Secp256k1, path=path)
-    assert public_key.hex() == ref_public_key
-    assert chain_code.hex() == ref_chain_code
+    addr : Address = get_address_from_public_key(response_hex_upper_based_decoded) 
+    assert addr.Text == "P2KHQ419gj1N5cYvPrpWpp6E5j4tcEixMfzUPWTi4F2qzRa"
 
 
 # In this test we check that the GET_PUBLIC_KEY in confirmation mode replies an error if the user refuses

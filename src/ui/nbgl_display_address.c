@@ -77,8 +77,8 @@ int ui_display_address() {
         return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
     }
 
-    nbgl_useCaseReviewStart(&C_app_boilerplate_64px,
-                            "Verify BOL address",
+    nbgl_useCaseReviewStart(&C_app_phantasma_64px,
+                            "Verify Phantasma address",
                             NULL,
                             "Cancel",
                             continue_review,

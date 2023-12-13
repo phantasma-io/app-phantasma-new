@@ -85,8 +85,8 @@ static void review_continue(void) {
     pairList.pairs = pairs;
 
     // Info long press
-    infoLongPress.icon = &C_app_boilerplate_64px;
-    infoLongPress.text = "Sign transaction\nto send BOL";
+    infoLongPress.icon = &C_app_phantasma_64px;
+    infoLongPress.text = "Sign transaction\nto send Phantasma";
     infoLongPress.longPressText = "Hold to sign";
 
     nbgl_useCaseStaticReview(&pairList, &infoLongPress, "Reject transaction", review_choice);
@@ -111,7 +111,7 @@ int ui_display_transaction() {
                       EXPONENT_SMALLEST_UNIT)) {
         return io_send_sw(SW_DISPLAY_AMOUNT_FAIL);
     }
-    snprintf(g_amount, sizeof(g_amount), "BOL %.*s", sizeof(amount), amount);
+    snprintf(g_amount, sizeof(g_amount), "Phantasma %.*s", sizeof(amount), amount);
     memset(g_address, 0, sizeof(g_address));
 
     if (format_hex(G_context.tx_info.transaction.to, ADDRESS_LEN, g_address, sizeof(g_address)) ==
@@ -120,8 +120,8 @@ int ui_display_transaction() {
     }
 
     // Start review
-    nbgl_useCaseReviewStart(&C_app_boilerplate_64px,
-                            "Review transaction\nto send BOL",
+    nbgl_useCaseReviewStart(&C_app_phantasma_64px,
+                            "Review transaction\nto send Phantasma",
                             NULL,
                             "Reject transaction",
                             review_continue,
