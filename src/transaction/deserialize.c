@@ -476,7 +476,6 @@ parser_status_e transaction_deserialize(buffer_t *buf, transaction_t *tx) {
         tx->token = (uint8_t *) tx->transfer_tokens.args[1].load.buf.ptr;
         tx->token_len = tx->transfer_tokens.args[1].load.buf.size;
     } else if (tx->type == TRANSACTION_TYPE_CUSTOM) {
-
         tx->from = (uint8_t *) tx->allow_gas.args[3].load.buf.ptr;
         tx->from_len = tx->allow_gas.args[3].load.buf.size;
         // Handle Stake Tokens

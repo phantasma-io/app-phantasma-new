@@ -40,7 +40,7 @@
 // Buffer where the transaction amount string is written
 static char g_amount[30];
 // Buffer where the transaction address string is written
-//static char g_address[43];
+// static char g_address[43];
 static char g_address[64];
 static char g_token[TOKEN_LEN];
 static char g_contract[TOKEN_LEN];
@@ -97,7 +97,7 @@ static void review_continue(void) {
     pairs[5].value = g_chain;
     pairs[6].item = "Script length";
     pairs[6].value = g_scriptlength;
-    
+
     // Setup list
     pairList.nbMaxLinesForValue = 0;
     pairList.nbPairs = 7;
@@ -140,15 +140,16 @@ int ui_display_transaction() {
     memset(g_amount, 0, sizeof(g_amount));
     memmove(g_amount, G_context.tx_info.transaction.value, G_context.tx_info.transaction.value_len);
 
-    //snprintf(g_amount, sizeof(g_amount), "%.*s", sizeof(amount), amount);
+    // snprintf(g_amount, sizeof(g_amount), "%.*s", sizeof(amount), amount);
 
     memset(g_address, 0, sizeof(g_address));
     memmove(g_address, G_context.tx_info.transaction.to, G_context.tx_info.transaction.to_len);
 
-    //if (format_hex(G_context.tx_info.transaction.to, ADDRESS_LEN, g_address, sizeof(g_address)) ==
-    //   -1) {
-    //    return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
-    //}
+    // if (format_hex(G_context.tx_info.transaction.to, ADDRESS_LEN, g_address, sizeof(g_address))
+    // ==
+    //    -1) {
+    //     return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
+    // }
 
     // Start review
     nbgl_useCaseReviewStart(&C_app_phantasma_64px,
@@ -174,7 +175,7 @@ static void review_continue_custom(void) {
     pairs[4].value = g_address;
     pairs[5].item = "Contract Method Args";
     pairs[5].value = g_contract_method_args;
-    
+
     // Setup list
     pairList.nbMaxLinesForValue = 1;
     pairList.nbPairs = 6;
