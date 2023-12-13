@@ -37,11 +37,11 @@ APPVERSION = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 APP_SOURCE_PATH += src
 
 # APPLICATION_FLAG_BOLOS_SETTINGS
-ifeq ($(TARGET_NAME), TARGET_NANOX)
-APP_LOAD_PARAMS=--appFlags 0x200
-else
-APP_LOAD_PARAMS=--appFlags 0x000
-endif
+#ifeq ($(TARGET_NAME), TARGET_NANOX)
+#APP_LOAD_PARAMS=--appFlags 0x200
+#else
+#APP_LOAD_PARAMS=--appFlags 0x000
+#endif
 
 
 # Application icons following guidelines:
