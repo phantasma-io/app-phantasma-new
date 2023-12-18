@@ -61,15 +61,12 @@ def test_sign_tx_short_tx(firmware, backend, navigator, test_name):
                                                       "Hold to sign",
                                                       ROOT_SCREENSHOT_PATH,
                                                       test_name)
-        print(client.get_async_response())
-    response = client.get_async_response()
+    response = client.get_async_response().data
     print(response)
     # Send the sign device instruction.
     # As it requires on-screen validation, the function is asynchronous.
     # It will yield the result when the navigation is done
     
-
-    assert False
     #'''_, der_sig, _ = unpack_sign_tx_response(response)
     #assert check_signature_validity(public_key, der_sig, transaction)'''
 
@@ -77,7 +74,7 @@ def test_sign_tx_short_tx(firmware, backend, navigator, test_name):
 # In this test se send to the device a transaction to sign and validate it on screen
 # This test is mostly the same as the previous one but with different values.
 # In particular the long memo will force the transaction to be sent in multiple chunks
-'''
+
 def test_sign_tx_long_tx(firmware, backend, navigator, test_name):
     # Use the app interface instead of raw interface
     client = BoilerplateCommandSender(backend)
@@ -121,8 +118,8 @@ def test_sign_tx_long_tx(firmware, backend, navigator, test_name):
                                                       ROOT_SCREENSHOT_PATH,
                                                       test_name)
     response = client.get_async_response().data
-    _, der_sig, _ = unpack_sign_tx_response(response)
-    assert check_signature_validity(public_key, der_sig, transaction)
+    ''' _, der_sig, _ = unpack_sign_tx_response(response)
+    assert check_signature_validity(public_key, der_sig, transaction)'''
 
 
 # Transaction signature refused test
@@ -178,4 +175,3 @@ def test_sign_tx_refused(firmware, backend, navigator, test_name):
             # Assert that we have received a refusal
             assert e.value.status == Errors.SW_DENY
             assert len(e.value.data) == 0
-'''

@@ -24,6 +24,7 @@
 #include "../../sw.h"
 #include "../../globals.h"
 #include "../../helper/send_response.h"
+#include "crypto.h"
 
 #define SIG_SIZE 64
 
@@ -37,38 +38,13 @@ void validate_pubkey(bool choice) {
     // ui_menu_main();
 }
 
-static int crypto_sign_message(void) {
-    uint32_t info = 0;
-    size_t sig_len = SIG_SIZE;  // sizeof(G_context.tx_info.signature);
-
-    cx_err_t error = bip32_derive_ecdsa_sign_hash_256(CX_CURVE_256K1,
-                                                      G_context.bip32_path,
-                                                      G_context.bip32_path_len,
-                                                      CX_RND_RFC6979 | CX_LAST,
-                                                      CX_SHA512,
-                                                      G_context.tx_info.m_hash,
-                                                      sizeof(G_context.tx_info.m_hash),
-                                                      G_context.tx_info.signature,
-                                                      &sig_len,
-                                                      &info);
-
-    if (error != CX_OK) {
-        return -1;
-    }
-
-    PRINTF("Signature: %.*H\n", sig_len, G_context.tx_info.signature);
-
-    G_context.tx_info.signature_len = sig_len;
-    G_context.tx_info.v = (uint8_t)(info & CX_ECCINFO_PARITY_ODD);
-
-    return 0;
-}
 
 void validate_transaction(bool choice) {
     if (choice) {
         G_context.state = STATE_APPROVED;
-
-        if (crypto_sign_message() != 0) {
+        uint8_t resp[2] = {0};
+        uint16_t *resp_word = (uint16_t *) resp;
+        if (crypto_sign_message(resp_word) != 0) {
             G_context.state = STATE_NONE;
             io_send_sw(SW_SIGNATURE_FAIL);
         } else {
