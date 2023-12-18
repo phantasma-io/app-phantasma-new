@@ -1,7 +1,7 @@
 import pytest
 
 from application_client.boilerplate_command_sender import BoilerplateCommandSender, Errors
-from application_client.boilerplate_response_unpacker import unpack_get_public_key_response, unpack_sign_tx_response
+from application_client.boilerplate_response_unpacker import  unpack_sign_tx_response
 from ragger.error import ExceptionRAPDU
 from ragger.navigator import NavInsID
 from utils import ROOT_SCREENSHOT_PATH, check_signature_validity
@@ -23,7 +23,7 @@ def test_sign_tx_short_tx(firmware, backend, navigator, test_name):
     path: str = "m/44'/60'/0'/0/0"
 
     # First we need to get the public key of the device in order to build the transaction
-    #rapdu = client.get_public_key(path=path)
+    rapdu = client.get_public_key(path=path)
   
     keys = PhantasmaKeys.from_wif("L5UEVHBjujaR1721aZM5Zm5ayjDyamMZS9W35RE9Y9giRkdf3dVx")
     amount = 10000000
@@ -43,30 +43,33 @@ def test_sign_tx_short_tx(firmware, backend, navigator, test_name):
         # you)
         "PHANTASMAROCKS"  # PAYLOAD
     )
+
     txSerialized = Base16.decode_uint8_array(transaction.toString(False))
 
-    print(TAG, Base16.encode_uint8_array(txSerialized))
-
+    with client.sign_tx(path=path, transaction=txSerialized):
+        print(firmware.device)
+        if firmware.device.startswith("nano"):
+            navigator.navigate_until_text_and_compare(NavInsID.RIGHT_CLICK,
+                                                      [NavInsID.BOTH_CLICK],
+                                                      "Approve",
+                                                      ROOT_SCREENSHOT_PATH,
+                                                      test_name)
+        else:
+            navigator.navigate_until_text_and_compare(NavInsID.USE_CASE_REVIEW_TAP,
+                                                      [NavInsID.USE_CASE_REVIEW_CONFIRM,
+                                                       NavInsID.USE_CASE_STATUS_DISMISS],
+                                                      "Hold to sign",
+                                                      ROOT_SCREENSHOT_PATH,
+                                                      test_name)
+        print(client.get_async_response())
+    response = client.get_async_response()
+    print(response)
     # Send the sign device instruction.
     # As it requires on-screen validation, the function is asynchronous.
     # It will yield the result when the navigation is done
-    with client.sign_tx(path=path, transaction=txSerialized):
-        # Validate the on-screen request by performing the navigation appropriate for this device
-        if firmware.device.startswith("nano"):
-            navigator.navigate_until_text_and_compare(NavInsID.RIGHT_CLICK,
-            [NavInsID.BOTH_CLICK],
-            "Approve",
-            ROOT_SCREENSHOT_PATH,
-            test_name)
-        else:
-            navigator.navigate_until_text_and_compare(NavInsID.USE_CASE_REVIEW_TAP,
-            [NavInsID.USE_CASE_REVIEW_CONFIRM,
-            NavInsID.USE_CASE_STATUS_DISMISS],
-            "Hold to sign",
-            ROOT_SCREENSHOT_PATH,
-            test_name)
-    # The device as yielded the result, parse it and ensure that the signature is correct
-    #response = client.get_async_response().data
+    
+
+    assert False
     #'''_, der_sig, _ = unpack_sign_tx_response(response)
     #assert check_signature_validity(public_key, der_sig, transaction)'''
 

@@ -50,7 +50,7 @@ APP_SOURCE_PATH += src
 ICON_NANOS = icons/nanos_app_phantasma.gif #16x16
 ICON_NANOSP = icons/nanox_app_phantasma.gif #14x14
 ICON_NANOX = icons/nanox_app_phantasma.gif #14x14
-ICON_STAX = icons/stax_app_phantasma.png #32x32
+ICON_STAX = icons/stax_app_phantasma.gif #32x32
 
 # Application allowed derivation curves.
 # Possibles curves are: secp256k1, secp256r1, ed25519 and bls12381g1

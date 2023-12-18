@@ -55,11 +55,8 @@ def unpack_get_public_key_response(response: bytes) -> Tuple[int, bytes, int, by
     reponse_str = base64.b16encode(response)
     pub_key = reponse_str[0:64]
     pub_key_len = len(pub_key)
-    #
-    #print(TAG, reponse_str[0:64])
 
     response, chain_code_len, chain_code = pop_size_prefixed_buf_from_buf(response)
-    print(TAG, chain_code_len, chain_code)
 
 
     assert pub_key_len == 64
