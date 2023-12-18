@@ -61,12 +61,7 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
         G_context.tx_info.raw_tx_len += cdata->size;
 
         size_t resp_size = G_context.tx_info.raw_tx_len;
-        /*
-        size_t offset = 0;
-        if (G_context.tx_info.raw_tx_len > IO_APDU_BUFFER_SIZE - 2) {
-            offset = G_context.tx_info.raw_tx_len - (IO_APDU_BUFFER_SIZE - 2);
-        }
-        */
+
         if (more) {
             // more APDUs with transaction part are expected.
             // Send a SW_OK to signal that we have received the chunk
@@ -83,7 +78,6 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
             parser_status_e status = transaction_deserialize(&buf, &G_context.tx_info.transaction);
             PRINTF("Parsing status: %d.\n", status);
             if (status != PARSING_OK) {
-                // return io_send_sw(SW_TX_PARSING_FAIL);
                 uint8_t resp[1] = {0};
                 resp[0] = status;
                 return io_send_response_pointer(resp, sizeof(resp), SW_TX_PARSING_FAIL);
@@ -96,25 +90,6 @@ int handler_sign_tx(buffer_t *cdata, uint8_t chunk, bool more) {
             } else {
                 return ui_display_transaction();
             }
-
-            /*cx_sha3_t keccak256;
-
-            if (cx_keccak_init_no_throw(&keccak256, 256) != CX_OK) {
-                return io_send_sw(SW_TX_HASH_FAIL);
-            }
-
-            if (cx_hash_no_throw((cx_hash_t *) &keccak256,
-                                 CX_LAST,
-                                 G_context.tx_info.raw_tx,
-                                 G_context.tx_info.raw_tx_len,
-                                 G_context.tx_info.m_hash,
-                                 sizeof(G_context.tx_info.m_hash)) != CX_OK) {
-                return io_send_sw(SW_TX_HASH_FAIL);
-            }
-
-            PRINTF("Hash: %.*H\n", sizeof(G_context.tx_info.m_hash), G_context.tx_info.m_hash);
-
-            return ui_display_transaction();*/
         }
     }
 

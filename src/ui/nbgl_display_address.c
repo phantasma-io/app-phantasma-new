@@ -73,10 +73,6 @@ int ui_display_address() {
         return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
     }
 
-    // if (format_hex(address, sizeof(address), g_address, sizeof(g_address)) == -1) {
-    //     return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
-    // }
-
     memmove(g_address, address, ADDRESS_LEN);
 
     nbgl_useCaseReviewStart(&C_app_phantasma_64px,

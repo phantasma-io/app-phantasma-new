@@ -43,7 +43,6 @@ static char g_address[240];
 static char g_token[TOKEN_LEN];
 static char g_contract[TOKEN_LEN];
 static char g_contract_method[CONTRACT_METHOD_LEN];
-// static char g_contract_method_args[64];
 static char g_nexus[NEXUS_LEN];
 static char g_chain[CHAIN_LEN];
 static char g_txlength[TXLENGTH_LEN];
@@ -222,21 +221,14 @@ int ui_display_transaction() {
     format_u64(g_scriptlength, sizeof(g_scriptlength), G_context.tx_info.transaction.script_len);
 
     memset(g_amount, 0, sizeof(g_amount));
-    // char amount[255] = {0};
     memmove(g_amount, G_context.tx_info.transaction.value, G_context.tx_info.transaction.value_len);
-    // snprintf(g_amount, sizeof(g_amount), "%.*s", sizeof(amount), amount);
-    // PRINTF("Amount: %s\n", g_amount);
 
     memset(g_address, 0, sizeof(g_address));
     memmove(g_address, G_context.tx_info.transaction.to, G_context.tx_info.transaction.to_len);
-    // g_address[0] = 'A';
-    // format_u64(g_address + 1, sizeof(g_address) - 1, G_context.tx_info.transaction.to_len);
-
+    
     memset(g_token, 0, sizeof(g_token));
     memmove(g_token, G_context.tx_info.transaction.token, G_context.tx_info.transaction.token_len);
-    // g_token[0] = 'T';
-    // format_u64(g_token + 1, sizeof(g_token) - 1, G_context.tx_info.transaction.token_len);
-
+    
     g_validate_callback = &ui_action_validate_transaction;
 
     ux_flow_init(0, ux_display_transaction_flow, NULL);
@@ -291,9 +283,6 @@ int ui_display_custom_transaction() {
         return io_send_sw(SW_BAD_STATE);
     }
 
-    // memset(g_txlength, 0, sizeof(g_txlength));
-    // format_u64(g_txlength, sizeof(g_txlength), G_context.tx_info.transaction.allow_gas.args_len);
-
     memset(g_nexus, 0, sizeof(g_nexus));
     memmove(g_nexus, G_context.tx_info.transaction.nexus, G_context.tx_info.transaction.nexus_len);
 
@@ -314,12 +303,6 @@ int ui_display_custom_transaction() {
     memmove(g_address,
             (uint8_t *) G_context.tx_info.transaction.output_args,
             G_context.tx_info.transaction.output_args_len);
-
-    // memset(g_scriptlength, 0, sizeof(g_scriptlength));
-    // format_u64(g_scriptlength, sizeof(g_scriptlength), G_context.tx_info.transaction.script_len);
-
-    // memset(g_address, 0, sizeof(g_address));
-    // memmove(g_address, G_context.tx_info.transaction.to, G_context.tx_info.transaction.to_len);
 
     // TODO: Needs to show args from the contract call.
 

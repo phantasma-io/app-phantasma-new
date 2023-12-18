@@ -39,7 +39,7 @@ int crypto_derive_private_key(cx_ecfp_private_key_t *private_key,
                 raw_private_key,
                 NULL);
 
-            if (bip32_nt == CX_INTERNAL_ERROR) return -1;  // THROW(-1);
+            if (bip32_nt == CX_INTERNAL_ERROR) return -1;
 
             // Initialize new private_key from raw
             cx_err_t privKey_nt =
@@ -124,7 +124,6 @@ int crypto_sign_message(uint16_t *resp_word) {
     *resp_word = err;
 
     explicit_bzero(&private_key, sizeof(private_key));
-    // PRINTF("Signature: %.*H\n", sig_len, G_context.tx_info.signature);
 
     if (err != CX_OK) {
         return -1;

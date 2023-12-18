@@ -36,21 +36,20 @@ APPVERSION = "$(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)"
 # Application source files
 APP_SOURCE_PATH += src
 
-# APPLICATION_FLAG_BOLOS_SETTINGS
-#ifeq ($(TARGET_NAME), TARGET_NANOX)
-#APP_LOAD_PARAMS=--appFlags 0x200
-#else
-#APP_LOAD_PARAMS=--appFlags 0x000
-#endif
-
-
 # Application icons following guidelines:
 # https://developers.ledger.com/docs/embedded-app/design-requirements/#device-icon
-
 ICON_NANOS = icons/nanos_app_phantasma.gif #16x16
 ICON_NANOSP = icons/nanox_app_phantasma.gif #14x14
 ICON_NANOX = icons/nanox_app_phantasma.gif #14x14
 ICON_STAX = icons/stax_app_phantasma.gif #32x32
+
+# APPLICATION_FLAG_BOLOS_SETTING
+# Correctly implemented apps should not set anything in APP_LOAD_PARAMS anymore
+ifeq ($(TARGET_NAME), TARGET_NANOX)
+APP_FLAGS_APP_LOAD_PARAMS = 0x200
+else
+APP_FLAGS_APP_LOAD_PARAMS = 0x000
+endif
 
 # Application allowed derivation curves.
 # Possibles curves are: secp256k1, secp256r1, ed25519 and bls12381g1

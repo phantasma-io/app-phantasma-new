@@ -34,10 +34,7 @@ void validate_pubkey(bool choice) {
     } else {
         io_send_sw(SW_DENY);
     }
-
-    // ui_menu_main();
 }
-
 
 void validate_transaction(bool choice) {
     if (choice) {

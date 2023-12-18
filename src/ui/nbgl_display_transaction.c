@@ -140,16 +140,8 @@ int ui_display_transaction() {
     memset(g_amount, 0, sizeof(g_amount));
     memmove(g_amount, G_context.tx_info.transaction.value, G_context.tx_info.transaction.value_len);
 
-    // snprintf(g_amount, sizeof(g_amount), "%.*s", sizeof(amount), amount);
-
     memset(g_address, 0, sizeof(g_address));
     memmove(g_address, G_context.tx_info.transaction.to, G_context.tx_info.transaction.to_len);
-
-    // if (format_hex(G_context.tx_info.transaction.to, ADDRESS_LEN, g_address, sizeof(g_address))
-    // ==
-    //    -1) {
-    //     return io_send_sw(SW_DISPLAY_ADDRESS_FAIL);
-    // }
 
     // Start review
     nbgl_useCaseReviewStart(&C_app_phantasma_64px,

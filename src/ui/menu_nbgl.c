@@ -60,8 +60,6 @@ static char INFO_ADDRESS[ADDRESS_LEN];
 static const char* const INFO_TYPES[] = {"Version", "Developer", "Address"};
 static const char* const INFO_CONTENTS[] = {APPVERSION, "Phantasma Team", INFO_ADDRESS};
 
-// static nbgl_layoutSwitch_t switches[SETTINGS_SWITCHES_NB] = {0};
-
 static void build_first_page(nbgl_pageContent_t* content) {
     content->type = INFOS_LIST;
     content->infosList.nbInfos = 3;

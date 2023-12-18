@@ -115,7 +115,7 @@ class BoilerplateCommandSender:
                                   p2=P2.P2_MORE,
                                   data=msg)
             idx += 1
-        
+
         with self.backend.exchange_async(cla=CLA,
                                          ins=InsType.SIGN_TX,
                                          p1=idx,
