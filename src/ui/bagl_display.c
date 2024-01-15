@@ -225,10 +225,10 @@ int ui_display_transaction() {
 
     memset(g_address, 0, sizeof(g_address));
     memmove(g_address, G_context.tx_info.transaction.to, G_context.tx_info.transaction.to_len);
-    
+
     memset(g_token, 0, sizeof(g_token));
     memmove(g_token, G_context.tx_info.transaction.token, G_context.tx_info.transaction.token_len);
-    
+
     g_validate_callback = &ui_action_validate_transaction;
 
     ux_flow_init(0, ux_display_transaction_flow, NULL);
